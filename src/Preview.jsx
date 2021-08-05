@@ -1,7 +1,14 @@
 import React from "react";
 
 const Preview = ({ html }) => (
-  <div dangerouslySetInnerHTML={{ __html: html }} />
+  <iframe
+    className="preview"
+    id="previewIframe"
+    loading="lazy"
+    srcDoc={html}
+    title="Edition Preview"
+    allowFullScreen
+  />
 );
 
 export default Preview;

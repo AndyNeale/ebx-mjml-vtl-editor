@@ -21,20 +21,22 @@ function App() {
       let vtl;
       let html;
       try {
-        vtl = mjml2html(debouncedContent).html;
+        vtl = Velocity.render(debouncedContent, editionData);
+        // console.log(html);
+        // console.log("VTL OK");
+      } catch (error) {
+        // console.log("VTL ERROR");
+        // console.log(error);
+      }
+      try {
+        html = mjml2html(vtl).html;
+        setRenderedContent(html);
+        // console.log(html);
         // console.log("MJML OK");
       } catch (error) {
         // console.log("MJML ERROR");
         // console.log(error);
         return;
-      }
-      try {
-        html = Velocity.render(vtl, editionData);
-        // console.log("VTL OK");
-        setRenderedContent(html);
-      } catch (error) {
-        // console.log("VTL ERROR");
-        // console.log(error);
       }
     }
   }, [debouncedContent, editionData]);
