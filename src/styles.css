@@ -1,4 +1,6 @@
-body {
+body,
+input,
+button {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -37,7 +39,12 @@ code {
   display: flex;
 }
 
-button {
+button,
+input {
   margin: 5px;
   padding: 5px 10px;
+}
+
+label {
+  margin: 5px;
 }

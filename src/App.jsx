@@ -5,6 +5,7 @@ import FileSaver from "file-saver";
 import Velocity from "velocityjs";
 
 import Data from "./Data";
+import Export from "./Export";
 import Preview from "./Preview";
 
 import useDebounce from "./useDebounce";
@@ -16,6 +17,7 @@ function App() {
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState(null);
+  const [filename, setFilename] = useState("template");
 
   useEffect(() => {
     if (debouncedContent) {
@@ -85,14 +87,15 @@ function App() {
       return;
     }
     // console.log(vtl);
-    const filename = "template.vtl";
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(vtl, filename);
+      window.navigator.msSaveOrOpenBlob(vtl, `${filename}.vtl`);
     } else {
       const blob = new Blob([vtl], { type: "text/plain;charset=utf-8" });
-      FileSaver.saveAs(blob, filename);
+      FileSaver.saveAs(blob, `${filename}.vtl`);
     }
   };
+
+  const onFilenameChange = (event) => setFilename(event.target.value);
 
   return (
     <>
@@ -107,9 +110,11 @@ function App() {
         />
         <Preview html={renderedContent} />
       </div>
-      <div>
-        <button onClick={onExport}>Export</button>
-      </div>
+      <Export
+        filename={filename}
+        onChange={onFilenameChange}
+        onExport={onExport}
+      />
       <Data data={editionData} onChange={onDataChange} />
     </>
   );
