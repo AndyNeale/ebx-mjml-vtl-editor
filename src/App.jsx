@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
 import mjml2html from "mjml";
+import FileSaver from "file-saver";
 import Velocity from "velocityjs";
 
 import Data from "./Data";
@@ -64,6 +65,35 @@ function App() {
     editorRef.current = editor;
   };
 
+  const onExport = () => {
+    if (!debouncedContent) {
+      return;
+    }
+
+    // console.log("onExport");
+    let escaped = debouncedContent.replace(
+      /( *)(#[\S ]+)([\n\r])/gm,
+      "$1<mj-raw>$2</mj-raw>$3"
+    );
+    // console.log(escaped);
+    let vtl;
+    try {
+      vtl = mjml2html(escaped).html;
+    } catch (error) {
+      // console.log("VTL ERROR");
+      // console.log(error);
+      return;
+    }
+    // console.log(vtl);
+    const filename = "template.vtl";
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(vtl, filename);
+    } else {
+      const blob = new Blob([vtl], { type: "text/plain;charset=utf-8" });
+      FileSaver.saveAs(blob, filename);
+    }
+  };
+
   return (
     <>
       <div className="d-flex">
@@ -76,6 +106,9 @@ function App() {
           width="50%"
         />
         <Preview html={renderedContent} />
+      </div>
+      <div>
+        <button onClick={onExport}>Export</button>
       </div>
       <Data data={editionData} onChange={onDataChange} />
     </>
