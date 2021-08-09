@@ -74,7 +74,7 @@ function App() {
 
     // console.log("onExport");
     let escaped = debouncedContent.replace(
-      /( *)(#[\S ]+)([\n\r])/gm,
+      /(^ *)(#[\S ]+)([\n\r])/gm,
       "$1<mj-raw>$2</mj-raw>$3"
     );
     // console.log(escaped);
