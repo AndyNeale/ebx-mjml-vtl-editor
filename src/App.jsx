@@ -100,22 +100,28 @@ function App() {
   return (
     <>
       <div className="d-flex">
-        <Editor
-          className="editor"
-          defaultLanguage="html"
-          defaultValue=""
-          onChange={onEditorChange}
-          onMount={onEditorMount}
-          width="50%"
-        />
-        <Preview html={renderedContent} />
+        <div className="editor-container">
+          <div className="section-titles">Editor</div>
+          <Editor
+            className="editor"
+            defaultLanguage="html"
+            defaultValue=""
+            onChange={onEditorChange}
+            onMount={onEditorMount}
+          />
+        </div>
+        <div className="preview-container">
+          <Preview html={renderedContent} />
+        </div>
       </div>
+
+      <div className="section-titles">Data</div>
+      <Data data={editionData} onChange={onDataChange} />
       <Export
         filename={filename}
         onChange={onFilenameChange}
         onExport={onExport}
       />
-      <Data data={editionData} onChange={onDataChange} />
     </>
   );
 }
