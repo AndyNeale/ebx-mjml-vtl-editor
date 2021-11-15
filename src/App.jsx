@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
-import mjml2html from "mjml";
+import mjml2html from "mjml-browser";
 import FileSaver from "file-saver";
 import Velocity from "velocityjs";
 

@@ -1,5 +1,3 @@
-/* eslint react-hooks/exhaustive-deps: "off" */
-
 import { useState, useEffect } from "react";
 
 export default function useDebounce(value, delay) {
