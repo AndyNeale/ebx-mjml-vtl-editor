@@ -14,25 +14,48 @@ code {
     monospace;
 }
 
-.editor {
-  border: 1px solid #333;
-  margin: 5px;
-  padding: 10px;
-  height: 60vh;
+.section-titles {
+  border-top: 1px solid #333;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+  margin: 5px 5px 0px 5px;
+  padding: 3px 20px 5px;
+  width: fit-content;
+  background-color: #eee;
+  font-size: 0.8rem;
 }
 
-.data {
-  width: calc(100% - 32px);
-  height: 20vh;
-  margin: 5px;
+.editor-container {
+  width: 50%;
+}
+
+.editor {
+  border: 1px solid #333;
+  margin: 0px 5px 5px 5px;
   padding: 10px;
+  height: 60vh;
+  width: 100%;
+}
+
+.preview-container {
+  width: 50%;
 }
 
 .preview {
   border: 1px solid #333;
-  width: 100%;
-  margin: 5px;
+  width: calc(100% - 32px);
+  height: 60vh;
+  margin: 0px 5px 5px 5px;
   padding: 10px;
+}
+
+.data {
+  border: 1px solid #333;
+  width: calc(100% - 32px);
+  min-height: 10vh;
+  margin: 0px 5px 5px 5px;
+  padding: 10px;
+  resize: vertical;
 }
 
 .d-flex {
