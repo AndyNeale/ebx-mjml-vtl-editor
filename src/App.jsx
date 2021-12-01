@@ -67,6 +67,18 @@ function App() {
     editorRef.current = editor;
   };
 
+  const escapeString = str => {
+    const escapedString = str.replace(/[\\]/g, '\\\\')
+    .replace(/[\"]/g, '\\\"')
+    .replace(/[\/]/g, '\\/')
+    .replace(/[\b]/g, '\\b')
+    .replace(/[\f]/g, '\\f')
+    .replace(/[\n]/g, '\\n')
+    .replace(/[\r]/g, '\\r')
+    .replace(/[\t]/g, '\\t')
+    return escapedString;
+  };
+
   const onExport = () => {
     if (!debouncedContent) {
       return;
@@ -81,12 +93,13 @@ function App() {
     let vtl;
     try {
       vtl = mjml2html(escaped).html;
+      vtl = escapeString(vtl);
     } catch (error) {
       // console.log("VTL ERROR");
       // console.log(error);
       return;
     }
-    // console.log(vtl);
+    
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(vtl, `${filename}.vtl`);
     } else {
