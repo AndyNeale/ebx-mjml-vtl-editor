@@ -12,12 +12,18 @@ import useDebounce from "./useDebounce";
 
 import "./styles.css";
 
+const EXPORT_TYPE = {
+  MASTER: 'MASTER',
+  CAMPAIGN: 'CAMPAIGN',
+}
+
 function App() {
   const [rawContent, setRawContent] = useState(null);
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState(null);
-  const [filename, setFilename] = useState("template");
+  const [masterFilename, setMasterFilename] = useState("template");
+  const [campaignFilename, setCampaignFilename] = useState("template");
 
   useEffect(() => {
     if (debouncedContent) {
@@ -79,7 +85,7 @@ function App() {
     return escapedString;
   };
 
-  const onExport = () => {
+  const onExport = (filename, fileType) => {
     if (!debouncedContent) {
       return;
     }
@@ -93,7 +99,10 @@ function App() {
     let vtl;
     try {
       vtl = mjml2html(escaped).html;
-      vtl = escapeString(vtl);
+      if (fileType === EXPORT_TYPE.MASTER)
+      {
+        vtl = escapeString(vtl);
+      }
     } catch (error) {
       // console.log("VTL ERROR");
       // console.log(error);
@@ -108,7 +117,8 @@ function App() {
     }
   };
 
-  const onFilenameChange = (event) => setFilename(event.target.value);
+  const onMasterFilenameChange = (event) => setMasterFilename(event.target.value);
+  const onCampaignFilenameChange = (event) => setCampaignFilename(event.target.value);
 
   return (
     <>
@@ -131,9 +141,16 @@ function App() {
       <div className="section-titles">Data</div>
       <Data data={editionData} onChange={onDataChange} />
       <Export
-        filename={filename}
-        onChange={onFilenameChange}
-        onExport={onExport}
+        filename={masterFilename}
+        onChange={onMasterFilenameChange}
+        onExport={() => onExport(masterFilename, EXPORT_TYPE.MASTER)}
+        exportType={EXPORT_TYPE.MASTER}
+      />
+      <Export
+        filename={campaignFilename}
+        onChange={onCampaignFilenameChange}
+        onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
+        exportType={EXPORT_TYPE.CAMPAIGN}
       />
     </>
   );
