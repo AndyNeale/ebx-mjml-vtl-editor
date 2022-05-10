@@ -13,8 +13,8 @@ import useDebounce from "./useDebounce";
 import "./styles.css";
 
 const EXPORT_TYPE = {
-  MASTER: 'MASTER',
-  CAMPAIGN: 'CAMPAIGN',
+  ENCODED: 'ENCODED',
+  NOT_ENCODED: 'NOT ENCODED',
 }
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState(null);
-  const [masterFilename, setMasterFilename] = useState("template");
+  // const [masterFilename, setMasterFilename] = useState("template");
   const [campaignFilename, setCampaignFilename] = useState("template");
 
   useEffect(() => {
@@ -117,7 +117,7 @@ function App() {
     }
   };
 
-  const onMasterFilenameChange = (event) => setMasterFilename(event.target.value);
+  // const onMasterFilenameChange = (event) => setMasterFilename(event.target.value);
   const onCampaignFilenameChange = (event) => setCampaignFilename(event.target.value);
 
   return (
@@ -140,17 +140,18 @@ function App() {
 
       <div className="section-titles">Data</div>
       <Data data={editionData} onChange={onDataChange} />
-      <Export
+      {/* Old Method which manually encodes the template, was used for when we didn't apply encoding on the backend */}
+      {/* <Export
         filename={masterFilename}
         onChange={onMasterFilenameChange}
         onExport={() => onExport(masterFilename, EXPORT_TYPE.MASTER)}
-        exportType={EXPORT_TYPE.MASTER}
-      />
+        exportType={EXPORT_TYPE.ENCODED}
+      /> */}
       <Export
         filename={campaignFilename}
         onChange={onCampaignFilenameChange}
         onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
-        exportType={EXPORT_TYPE.CAMPAIGN}
+        exportType={EXPORT_TYPE.NOT_ENCODED}
       />
     </>
   );
