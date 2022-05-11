@@ -15,6 +15,7 @@ code {
 }
 
 .section-titles {
+  align-items: center;
   border-top: 1px solid #333;
   border-left: 1px solid #333;
   border-right: 1px solid #333;
@@ -27,6 +28,10 @@ code {
 
 .editor-container {
   width: 50%;
+}
+
+.editor-container section {
+  height: auto !important;
 }
 
 .editor {

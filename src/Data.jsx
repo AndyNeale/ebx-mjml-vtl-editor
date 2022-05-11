@@ -2,7 +2,7 @@ import React from "react";
 
 const Data = ({ data, onChange }) => (
   <div>
-    <textarea className="data" onChange={onChange}>
+    <textarea id="dataTextarea" className="data" onChange={onChange}>
       {data}
     </textarea>
   </div>
