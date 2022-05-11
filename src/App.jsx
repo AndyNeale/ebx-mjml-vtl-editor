@@ -56,8 +56,7 @@ function App() {
 
   const onDataChange = (data) => {
     try {
-      const raw = data;
-      const json = JSON.parse(raw);
+      const json = JSON.parse(data);
       setEditionData(json);
     } catch (error) {
       // console.log('DATA ERROR');
