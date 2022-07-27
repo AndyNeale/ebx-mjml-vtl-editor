@@ -100,10 +100,12 @@ function App() {
     let vtl;
     try {
       vtl = mjml2html(escaped).html;
+      /*
       if (fileType === EXPORT_TYPE.MASTER)
       {
         vtl = escapeString(vtl);
       }
+      */
     } catch (error) {
       // console.log("VTL ERROR");
       // console.log(error);
