@@ -14,7 +14,7 @@ const Settings = ({ renderMJML, renderVTL, setRenderMJML, setRenderVTL }) => {
           checked={renderMJML}
           onChange={toggleRenderMJML}
         />
-        <label for="mjml">Render MJML</label>
+        <label htmlFor="mjml">Render MJML</label>
       </div>
       <div>
         <input
@@ -23,7 +23,7 @@ const Settings = ({ renderMJML, renderVTL, setRenderMJML, setRenderVTL }) => {
           checked={renderVTL}
           onChange={toggleRenderVTL}
         />
-        <label for="mjml">Render VTL</label>
+        <label htmlFor="mjml">Render VTL</label>
       </div>
     </div>
   );
