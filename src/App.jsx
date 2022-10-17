@@ -7,6 +7,7 @@ import Velocity from "velocityjs";
 import Data from "./Data";
 import Export from "./Export";
 import Preview from "./Preview";
+import Settings from "./Settings";
 
 import useDebounce from "./useDebounce";
 
@@ -15,9 +16,9 @@ import { EXAMPLE_DATA } from "./data/example";
 import "./styles.css";
 
 const EXPORT_TYPE = {
-  ENCODED: 'ENCODED',
-  NOT_ENCODED: 'NOT ENCODED',
-}
+  ENCODED: "ENCODED",
+  NOT_ENCODED: "NOT ENCODED",
+};
 
 function App() {
   const [rawContent, setRawContent] = useState(null);
@@ -26,31 +27,34 @@ function App() {
   const [editionData, setEditionData] = useState("");
   // const [masterFilename, setMasterFilename] = useState("template");
   const [campaignFilename, setCampaignFilename] = useState("template");
+  const [renderMJML, setRenderMJML] = useState(false);
+  const [renderVTL, setRenderVTL] = useState(true);
 
   useEffect(() => {
     if (debouncedContent) {
-      let vtl;
-      let html;
-      try {
-        vtl = Velocity.render(debouncedContent, editionData);
-        // console.log(html);
-        // console.log("VTL OK");
-      } catch (error) {
-        // console.log("VTL ERROR");
-        // console.log(error);
+      let output = debouncedContent;
+      if (renderMJML) {
+        try {
+          output = mjml2html(output).html;
+        } catch (error) {
+          console.log("MJML rendering error", error);
+          return;
+        }
+      } else {
+        //
       }
-      try {
-        html = mjml2html(vtl).html;
-        setRenderedContent(html);
-        // console.log(html);
-        // console.log("MJML OK");
-      } catch (error) {
-        // console.log("MJML ERROR");
-        // console.log(error);
-        return;
+      if (renderVTL) {
+        try {
+          output = Velocity.render(output, editionData);
+        } catch (error) {
+          console.log("VTL rendering error", error);
+        }
+      } else {
+        //
       }
+      setRenderedContent(output);
     }
-  }, [debouncedContent, editionData]);
+  }, [debouncedContent, editionData, renderMJML, renderVTL]);
 
   const editorRef = useRef(null);
 
@@ -74,24 +78,11 @@ function App() {
     editorRef.current = editor;
   };
 
-  const escapeString = str => {
-    const escapedString = str.replace(/[\\]/g, '\\\\')
-    .replace(/[\"]/g, '\\\"')
-    .replace(/[\/]/g, '\\/')
-    .replace(/[\b]/g, '\\b')
-    .replace(/[\f]/g, '\\f')
-    .replace(/[\n]/g, '\\n')
-    .replace(/[\r]/g, '\\r')
-    .replace(/[\t]/g, '\\t')
-    return escapedString;
-  };
-
   const onExport = (filename, fileType) => {
     if (!debouncedContent) {
       return;
     }
 
-    // console.log("onExport");
     let escaped = debouncedContent.replace(
       /(^ *)(#[\S ]+)([\n\r])/gm,
       "$1<mj-raw>$2</mj-raw>$3"
@@ -100,18 +91,11 @@ function App() {
     let vtl;
     try {
       vtl = mjml2html(escaped).html;
-      /*
-      if (fileType === EXPORT_TYPE.MASTER)
-      {
-        vtl = escapeString(vtl);
-      }
-      */
     } catch (error) {
-      // console.log("VTL ERROR");
-      // console.log(error);
+      console.log("Export error", error);
       return;
     }
-    
+
     if (window.navigator && window.navigator.msSaveOrOpenBlob) {
       window.navigator.msSaveOrOpenBlob(vtl, `${filename}.vtl`);
     } else {
@@ -120,14 +104,14 @@ function App() {
     }
   };
 
-  // const onMasterFilenameChange = (event) => setMasterFilename(event.target.value);
-  const onCampaignFilenameChange = (event) => setCampaignFilename(event.target.value);
+  const onCampaignFilenameChange = (event) =>
+    setCampaignFilename(event.target.value);
 
   const handleUseExampleJSON = () => {
     const json = JSON.stringify(EXAMPLE_DATA, null, 4);
     document.getElementById("dataTextarea").value = json;
     onDataChange(json);
-  }
+  };
 
   return (
     <>
@@ -148,21 +132,25 @@ function App() {
       </div>
       <div className="d-flex">
         <div className="section-titles d-flex align-items-center">Data</div>
-        <button onClick={handleUseExampleJSON} className="m-0 p-0">Use Example JSON - 10/05/22</button>
+        <button onClick={handleUseExampleJSON} className="m-0 p-0">
+          Use Example JSON - 10/05/22
+        </button>
       </div>
-      <Data data={editionData} onChange={event => onDataChange(event.target.value)} />
-      {/* Old Method which manually encodes the template, was used for when we didn't apply encoding on the backend */}
-      {/* <Export
-        filename={masterFilename}
-        onChange={onMasterFilenameChange}
-        onExport={() => onExport(masterFilename, EXPORT_TYPE.MASTER)}
-        exportType={EXPORT_TYPE.ENCODED}
-      /> */}
+      <Data
+        data={JSON.stringify(editionData, null, 2)}
+        onChange={(event) => onDataChange(event.target.value)}
+      />
       <Export
         filename={campaignFilename}
         onChange={onCampaignFilenameChange}
         onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
         exportType="Template"
+      />
+      <Settings
+        renderMJML={renderMJML}
+        setRenderMJML={setRenderMJML}
+        renderVTL={renderVTL}
+        setRenderVTL={setRenderVTL}
       />
     </>
   );
