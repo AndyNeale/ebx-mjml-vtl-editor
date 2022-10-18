@@ -25,29 +25,28 @@ function App() {
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState("");
-  // const [masterFilename, setMasterFilename] = useState("template");
   const [campaignFilename, setCampaignFilename] = useState("template");
-  const [renderMJML, setRenderMJML] = useState(false);
+  const [renderMJML, setRenderMJML] = useState(true);
   const [renderVTL, setRenderVTL] = useState(true);
 
   useEffect(() => {
     if (debouncedContent) {
       let output = debouncedContent;
+      if (renderVTL) {
+        try {
+          output = Velocity.render(output, editionData);
+        } catch (error) {
+          console.log("VTL rendering error", error);
+        }
+      } else {
+        //
+      }
       if (renderMJML) {
         try {
           output = mjml2html(output).html;
         } catch (error) {
           console.log("MJML rendering error", error);
           return;
-        }
-      } else {
-        //
-      }
-      if (renderVTL) {
-        try {
-          output = Velocity.render(output, editionData);
-        } catch (error) {
-          console.log("VTL rendering error", error);
         }
       } else {
         //
