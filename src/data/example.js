@@ -97,6 +97,7 @@ export const EXAMPLE_DATA = {
             "https://ichef.bbci.co.uk/live-experience/cps/624/cpsprodpb/1FF2/production/_127287180_whatsubject.jpg",
         },
       ],
+      callToActionText: "Venture further",
       optimalArticleOrdering: [
         "urn:media:article:url:https://www.bbc.co.uk/sport/av/football/63332870",
         "urn:media:article:url:https://www.bbc.co.uk/sport/av/rugby-league/63318648",
@@ -134,6 +135,7 @@ export const EXAMPLE_DATA = {
             "http://cdn.shopify.com/s/files/1/0402/1239/8243/products/DarkTaste_18-10-22.png?v=1666079364",
         },
       ],
+      callToActionText: "See More Here",
       optimalArticleOrdering: [
         "urn:media:article:url:https://www.agoodcase.dk/products/founders-kbs-21-imperial-stout",
         "urn:media:article:url:https://www.agoodcase.dk/products/dark-taste-12-stk-1",
@@ -251,7 +253,7 @@ export const EXAMPLE_DATA = {
   headerLinkURL: "",
   logoImageURL:
     "https://media-exp1.licdn.com/dms/image/C4E0BAQFOy-F-7DA_MA/company-logo_200_200/0/1567693261233?e=2159024400&v=beta&t=bsNthHvLmSsAxAaZw-6lUuhP2h50Kbdn-cpuMjD9rCQ",
-  callToActionText: "See More Here",
+  callToActionText: "Read more",
   socialNetworkLinkText: "Follow {propertyName} on:",
   unsubscribeLinkText: "Stop following this newsletter?",
   privacyPolicyLinkText: "Our Privacy Policy",
