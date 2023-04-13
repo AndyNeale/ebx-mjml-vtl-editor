@@ -34,7 +34,12 @@ function App() {
       let output = debouncedContent;
       if (renderVTL) {
         try {
-          output = Velocity.render(output, editionData);
+          output = Velocity.render(output, {
+            ...editionData,
+            json: {
+              parse: (string) => JSON.parse(string),
+            },
+          });
         } catch (error) {
           console.log("VTL rendering error", error);
         }
