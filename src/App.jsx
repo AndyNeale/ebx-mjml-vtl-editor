@@ -38,7 +38,10 @@ function App() {
             ...editionData,
             ebx: {
               isCustomBlock: (string) => string.includes("@@@"),
-              getBlockType: (string) => string.replaceAll("@@@", ""),
+              getBlockType: (string) =>
+                string
+                  .replaceAll("@@@", "")
+                  .replace("urn:newsletter:block:", ""),
             },
             json: {
               parse: (string) => JSON.parse(string),
