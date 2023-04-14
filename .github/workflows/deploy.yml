@@ -26,9 +26,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn ci, build and test
+      - name: yarn build
         run: |
-          yarn run build
+          yarn install
+          yarn build
       - name: deploy to gh-pages
         uses: peaceiris/actions-gh-pages@v3
         with:
