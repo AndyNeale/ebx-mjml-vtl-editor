@@ -36,6 +36,10 @@ function App() {
         try {
           output = Velocity.render(output, {
             ...editionData,
+            ebx: {
+              isCustomBlock: (string) => string.includes("@@@"),
+              getBlockType: (string) => string.replaceAll("@@@", ""),
+            },
             json: {
               parse: (string) => JSON.parse(string),
             },
