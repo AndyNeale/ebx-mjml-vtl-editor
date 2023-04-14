@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/ebx-mjml-vtl-editor/static/css/main.f7ee3aa8.css",
+    "main.js": "/ebx-mjml-vtl-editor/static/js/main.844c59f8.js",
+    "index.html": "/ebx-mjml-vtl-editor/index.html",
+    "main.f7ee3aa8.css.map": "/ebx-mjml-vtl-editor/static/css/main.f7ee3aa8.css.map",
+    "main.844c59f8.js.map": "/ebx-mjml-vtl-editor/static/js/main.844c59f8.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f7ee3aa8.css",
+    "static/js/main.844c59f8.js"
+  ]
+}
