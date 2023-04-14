@@ -44,7 +44,7 @@ function App() {
                   .replace("urn:newsletter:block:", ""),
             },
             json: {
-              parse: (string) => JSON.parse(string),
+              parse: (string) => new Map(Object.entries(JSON.parse(string))),
             },
           });
         } catch (error) {
