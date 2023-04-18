@@ -63,6 +63,11 @@ code {
   resize: vertical;
 }
 
+.html {
+  font-size: 80%;
+  overflow-y: auto;
+}
+
 .d-flex {
   display: flex;
 }
