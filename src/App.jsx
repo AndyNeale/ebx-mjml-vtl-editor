@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import Editor from "@monaco-editor/react";
 import mjml2html from "mjml-browser";
 import FileSaver from "file-saver";
@@ -15,6 +16,13 @@ import { EXAMPLE_DATA } from "./data/example";
 
 import "./styles.css";
 
+const MJML = {
+  API_URL: "https://api.mjml.io/v1/render",
+  APPLICATION_ID: "bdc1c2c6-6469-4bb1-a4d3-0383d46fb4de",
+  CORS_PROXY_URL: "https://corsproxy.service.echobox.com/",
+  PUBLIC_KEY: "bcceb0fc-4c37-41da-9851-db1017b2eb92",
+};
+
 const EXPORT_TYPE = {
   ENCODED: "ENCODED",
   NOT_ENCODED: "NOT ENCODED",
@@ -30,41 +38,79 @@ function App() {
   const [renderVTL, setRenderVTL] = useState(true);
 
   useEffect(() => {
-    if (debouncedContent) {
-      let output = debouncedContent;
-      if (renderVTL) {
-        try {
-          output = Velocity.render(output, {
-            ...editionData,
-            ebx: {
-              isCustomBlock: (string) => string.includes("@@@"),
-              getBlockType: (string) =>
-                string
-                  .replaceAll("@@@", "")
-                  .replace("urn:newsletter:block:", ""),
-            },
-            json: {
-              parse: (string) => new Map(Object.entries(JSON.parse(string))),
-            },
-          });
-        } catch (error) {
-          console.log("VTL rendering error", error);
+    const renderTemplate = async () => {
+      if (debouncedContent) {
+        let output = debouncedContent.replace(
+          /(^ *)(#[\S ]+)([\n\r])/gm,
+          "$1<mj-raw>$2</mj-raw>$3"
+        );
+        if (renderVTL) {
+          try {
+            output = Velocity.render(output, {
+              ...editionData,
+              ebx: {
+                isCustomBlock: (string) => string.includes("@@@"),
+                getBlockType: (string) =>
+                  string
+                    .replaceAll("@@@", "")
+                    .replace("urn:newsletter:block:", ""),
+              },
+              json: {
+                parse: (string) => new Map(Object.entries(JSON.parse(string))),
+              },
+            });
+          } catch (error) {
+            console.log("VTL rendering error", error);
+          }
+        } else {
+          //
         }
-      } else {
-        //
-      }
-      if (renderMJML) {
-        try {
-          output = mjml2html(output).html;
-        } catch (error) {
-          console.log("MJML rendering error", error);
-          return;
+        if (renderMJML) {
+          try {
+            const config = {
+              url: `${MJML.CORS_PROXY_URL}${MJML.API_URL}`,
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "X-Requested-With": "Echobox",
+              },
+              auth: {
+                username: MJML.APPLICATION_ID,
+                password: MJML.PUBLIC_KEY,
+              },
+              data: JSON.stringify({
+                mjml: output,
+              }),
+            };
+            const response = await axios(config);
+            output = response.data.html;
+            /*
+            const credentials = Buffer.from(
+              `${MJML.APPLICATION_ID}:${MJML.PUBLIC_KEY}`
+            ).toString("base64");
+            const result = await fetch(MJML.API_URL, {
+              method: "POST",
+              headers: {
+                Authorization: `Basic ${credentials}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                render_mjml: output,
+              }),
+            });
+            output = result.json().html;
+            */
+          } catch (error) {
+            console.log("MJML rendering error", error);
+            return;
+          }
+        } else {
+          //
         }
-      } else {
-        //
+        setRenderedContent(output);
       }
-      setRenderedContent(output);
-    }
+    };
+    renderTemplate();
   }, [debouncedContent, editionData, renderMJML, renderVTL]);
 
   const editorRef = useRef(null);
