@@ -31,7 +31,10 @@ function App() {
 
   useEffect(() => {
     if (debouncedContent) {
-      let output = debouncedContent;
+      let output = debouncedContent.replace(
+        /(^ *)(#[\S ]+)([\n\r])/gm,
+        "$1<mj-raw>$2</mj-raw>$3"
+      );
       if (renderVTL) {
         try {
           output = Velocity.render(output, {
