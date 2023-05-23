@@ -49,6 +49,9 @@ function App() {
             json: {
               parse: (string) => new Map(Object.entries(JSON.parse(string))),
             },
+            html: {
+              decode: (string) => decodeURIComponent(string),
+            },
           });
         } catch (error) {
           console.log("VTL rendering error", error);
