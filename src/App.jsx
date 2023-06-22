@@ -11,7 +11,8 @@ import Settings from "./Settings";
 
 import useDebounce from "./useDebounce";
 
-import { EXAMPLE_DATA } from "./data/example";
+import { EXAMPLE_EDITION_DATA } from "./data/editionDataExample";
+import { EXAMPLE_ARTICLE_DATA } from "./data/articleDataExample";
 
 import "./styles.css";
 
@@ -25,6 +26,7 @@ function App() {
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState("");
+  const [articleData, setArticleData] = useState("");
   const [campaignFilename, setCampaignFilename] = useState("template");
   const [renderMJML, setRenderMJML] = useState(true);
   const [renderVTL, setRenderVTL] = useState(true);
@@ -35,8 +37,14 @@ function App() {
         /(^ *)(#[\S ]+)([\n\r])/gm,
         "$1<mj-raw>$2</mj-raw>$3"
       );
+      // Also wrap escaped velocity directives
+      output = output.replace(
+        /(^ *)(\\#[\S ]+)([\n\r])/gm,
+        "$1<mj-raw>$2</mj-raw>$3"
+      );
       if (renderVTL) {
         try {
+          // First render (with article placeholders)
           output = Velocity.render(output, {
             ...editionData,
             ebx: {
@@ -52,6 +60,10 @@ function App() {
             html: {
               decode: (string) => decodeURIComponent(string),
             },
+          });
+          // Second render (with article data)
+          output = Velocity.render(output, {
+            ...articleData,
           });
         } catch (error) {
           console.log("VTL rendering error", error);
@@ -71,14 +83,14 @@ function App() {
       }
       setRenderedContent(output);
     }
-  }, [debouncedContent, editionData, renderMJML, renderVTL]);
+  }, [debouncedContent, articleData, editionData, renderMJML, renderVTL]);
 
   const editorRef = useRef(null);
 
-  const onDataChange = (data) => {
+  const onDataChange = (data, setter) => {
     try {
       const json = JSON.parse(data);
-      setEditionData(json);
+      setter(json);
     } catch (error) {
       // console.log('DATA ERROR');
       // console.log(error);
@@ -104,6 +116,11 @@ function App() {
       /(^ *)(#[\S ]+)([\n\r])/gm,
       "$1<mj-raw>$2</mj-raw>$3"
     );
+    // Also wrap escaped velocity directives
+    escaped = escaped.replace(
+      /(^ *)(\\#[\S ]+)([\n\r])/gm,
+      "$1<mj-raw>$2</mj-raw>$3"
+    );
     // console.log(escaped);
     let vtl;
     try {
@@ -124,10 +141,18 @@ function App() {
   const onCampaignFilenameChange = (event) =>
     setCampaignFilename(event.target.value);
 
-  const handleUseExampleJSON = () => {
-    const json = JSON.stringify(EXAMPLE_DATA, null, 4);
-    document.getElementById("dataTextarea").value = json;
-    onDataChange(json);
+  const handleUseExampleJSON = (index, setter) => {
+    let json;
+    if (index === 0) {
+      json = JSON.stringify(EXAMPLE_EDITION_DATA, null, 4);
+    } else if (index === 1) {
+      json = JSON.stringify(EXAMPLE_ARTICLE_DATA, null, 4);
+    } else {
+      throw new Error("Unknown index");
+    }
+    document.getElementById(`dataTextArea-${index}`).value = json;
+
+    onDataChange(json, setter);
   };
 
   return (
@@ -148,14 +173,36 @@ function App() {
         </div>
       </div>
       <div className="d-flex">
-        <div className="section-titles d-flex align-items-center">Data</div>
-        <button onClick={handleUseExampleJSON} className="m-0 p-0">
-          Use Example JSON - 10/05/22
+        <div className="section-titles d-flex align-items-center">
+          Data (Edition data with placeholder articles)
+        </div>
+        <button
+          onClick={() => handleUseExampleJSON(0, setEditionData)}
+          className="m-0 p-0"
+        >
+          Use Example JSON - 20/06/2023
         </button>
       </div>
       <Data
         data={JSON.stringify(editionData, null, 2)}
-        onChange={(event) => onDataChange(event.target.value)}
+        index={0}
+        onChange={(event) => onDataChange(event.target.value, setEditionData)}
+      />
+      <div className="d-flex">
+        <div className="section-titles d-flex align-items-center">
+          Data (Article and personalisation data)
+        </div>
+        <button
+          onClick={() => handleUseExampleJSON(1, setArticleData)}
+          className="m-0 p-0"
+        >
+          Use Example JSON - 20/06/2023
+        </button>
+      </div>
+      <Data
+        data={JSON.stringify(articleData, null, 2)}
+        index={1}
+        onChange={(event) => onDataChange(event.target.value, setArticleData)}
       />
       <Export
         filename={campaignFilename}
