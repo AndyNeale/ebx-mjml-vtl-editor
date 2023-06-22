@@ -1,8 +1,8 @@
 import React from "react";
 
-const Data = ({ data, onChange }) => (
+const Data = ({ data, index, onChange }) => (
   <div>
-    <textarea id="dataTextarea" className="data" onChange={onChange}>
+    <textarea id={`dataTextArea-${index}`} className="data" onChange={onChange}>
       {data}
     </textarea>
   </div>
