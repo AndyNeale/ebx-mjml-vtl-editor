@@ -25,8 +25,8 @@ function App() {
   const [rawContent, setRawContent] = useState(null);
   const debouncedContent = useDebounce(rawContent, 500);
   const [renderedContent, setRenderedContent] = useState(null);
-  const [editionData, setEditionData] = useState("");
-  const [articleData, setArticleData] = useState("");
+  const [editionData, setEditionData] = useState({});
+  const [articleData, setArticleData] = useState({});
   const [campaignFilename, setCampaignFilename] = useState("template");
   const [renderMJML, setRenderMJML] = useState(true);
   const [renderVTL, setRenderVTL] = useState(true);
