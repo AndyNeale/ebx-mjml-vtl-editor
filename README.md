@@ -1,2 +1,3 @@
 # ebx-mjml-vtl-editor
-Created with CodeSandbox
+
+Echobox MJML-VTL editor
