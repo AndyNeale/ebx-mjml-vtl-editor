@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/ebx-mjml-vtl-editor/static/css/main.235510dc.css",
-    "main.js": "/ebx-mjml-vtl-editor/static/js/main.78b0f7d9.js",
+    "main.css": "/ebx-mjml-vtl-editor/static/css/main.ef53c93b.css",
+    "main.js": "/ebx-mjml-vtl-editor/static/js/main.7aa24084.js",
     "index.html": "/ebx-mjml-vtl-editor/index.html",
-    "main.235510dc.css.map": "/ebx-mjml-vtl-editor/static/css/main.235510dc.css.map",
-    "main.78b0f7d9.js.map": "/ebx-mjml-vtl-editor/static/js/main.78b0f7d9.js.map"
+    "main.ef53c93b.css.map": "/ebx-mjml-vtl-editor/static/css/main.ef53c93b.css.map",
+    "main.7aa24084.js.map": "/ebx-mjml-vtl-editor/static/js/main.7aa24084.js.map"
   },
   "entrypoints": [
-    "static/css/main.235510dc.css",
-    "static/js/main.78b0f7d9.js"
+    "static/css/main.ef53c93b.css",
+    "static/js/main.7aa24084.js"
   ]
 }
