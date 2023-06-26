@@ -6,14 +6,16 @@ const Preview = ({ html }) => {
 
   return (
     <div>
-      <div className="section-titles">
-        <a href="#" onClick={() => setCurrentTab("Preview")}>
-          Preview
-        </a>{" "}
-        |{" "}
-        <a href="#" onClick={() => setCurrentTab("HTML")}>
-          HTML
-        </a>
+      <div className="section-titles-container">
+        <div className="section-titles">
+          <a href="#" onClick={() => setCurrentTab("Preview")}>
+            Preview
+          </a>{" "}
+          |{" "}
+          <a href="#" onClick={() => setCurrentTab("HTML")}>
+            HTML
+          </a>
+        </div>
       </div>
       <div>
         {currentTab === "Preview" ? (

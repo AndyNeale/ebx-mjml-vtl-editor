@@ -1,3 +1,40 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.top-slice {
+  flex-grow: 1;
+  display: flex;
+}
+
+.top-left,
+.top-right {
+  flex-grow: 1;
+  width: 50%;
+}
+
+.data-slice {
+  height: 240px;
+  flex-grow: 1;
+  display: flex;
+}
+
+.settings-slice {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 body,
 input,
 button {
@@ -14,16 +51,28 @@ code {
     monospace;
 }
 
+.section-titles-container {
+  padding: 5px 5px 0px 5px;
+}
+
+/* Weird hack required because otherwise some inner part of the editor expands invisible and covers this control */
+.section-titles-container + section {
+  height: initial !important;
+}
+
 .section-titles {
   align-items: center;
   border-top: 1px solid #333;
   border-left: 1px solid #333;
   border-right: 1px solid #333;
-  margin: 5px 5px 0px 5px;
   padding: 3px 20px 5px;
   width: fit-content;
   background-color: #eee;
   font-size: 0.8rem;
+}
+
+.section-titles + .section-titles {
+  border-left: 0;
 }
 
 .editor-container {
@@ -39,11 +88,6 @@ code {
   margin: 0px 5px 5px 5px;
   padding: 10px;
   height: 60vh;
-  width: 100%;
-}
-
-.preview-container {
-  width: 50%;
 }
 
 .preview {
@@ -58,6 +102,7 @@ code {
   border: 1px solid #333;
   width: calc(100% - 32px);
   min-height: 5vh;
+  height: 150px;
   margin: 0px 5px 5px 5px;
   padding: 10px;
   resize: vertical;
@@ -72,6 +117,10 @@ code {
   display: flex;
 }
 
+.align-items-center {
+  align-items: center;
+}
+
 button,
 input {
   margin: 5px;
@@ -80,4 +129,14 @@ input {
 
 label {
   margin: 5px;
+}
+
+.section-titles button {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+.section-titles button:hover {
+  color: red;
 }

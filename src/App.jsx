@@ -156,10 +156,12 @@ function App() {
   };
 
   return (
-    <>
-      <div className="d-flex">
-        <div className="editor-container">
-          <div className="section-titles">Editor</div>
+    <div className="container">
+      <div className="top-slice">
+        <div className="top-left">
+          <div className="section-titles-container">
+            <div className="section-titles">Editor</div>
+          </div>
           <Editor
             className="editor"
             defaultLanguage="html"
@@ -168,55 +170,71 @@ function App() {
             onMount={onEditorMount}
           />
         </div>
-        <div className="preview-container">
-          <Preview html={renderedContent} />
+        <div className="top-right">
+          <div className="preview-container">
+            <Preview html={renderedContent} />
+          </div>
         </div>
       </div>
-      <div className="d-flex">
-        <div className="section-titles d-flex align-items-center">
-          Data (Edition data with placeholder articles)
+      <div className="data-slice">
+        <div className="top-left">
+          <div className="section-titles-container">
+            <div className="d-flex">
+              <div className="section-titles">
+                Data (Edition data with placeholder articles)
+              </div>
+              <div className="section-titles">
+                <button onClick={() => handleUseExampleJSON(0, setEditionData)}>
+                  Use Example JSON - 20/06/2023
+                </button>
+              </div>
+            </div>
+          </div>
+          <Data
+            data={JSON.stringify(editionData, null, 2)}
+            index={0}
+            onChange={(event) =>
+              onDataChange(event.target.value, setEditionData)
+            }
+          />
         </div>
-        <button
-          onClick={() => handleUseExampleJSON(0, setEditionData)}
-          className="m-0 p-0"
-        >
-          Use Example JSON - 20/06/2023
-        </button>
-      </div>
-      <Data
-        data={JSON.stringify(editionData, null, 2)}
-        index={0}
-        onChange={(event) => onDataChange(event.target.value, setEditionData)}
-      />
-      <div className="d-flex">
-        <div className="section-titles d-flex align-items-center">
-          Data (Article and personalisation data)
+        <div className="top-right">
+          <div className="section-titles-container">
+            <div className="d-flex">
+              <div className="section-titles">
+                Data (Article and personalisation data)
+              </div>
+              <div className="section-titles">
+                <button onClick={() => handleUseExampleJSON(1, setArticleData)}>
+                  Use Example JSON - 20/06/2023
+                </button>
+              </div>
+            </div>
+          </div>
+          <Data
+            data={JSON.stringify(articleData, null, 2)}
+            index={1}
+            onChange={(event) =>
+              onDataChange(event.target.value, setArticleData)
+            }
+          />
         </div>
-        <button
-          onClick={() => handleUseExampleJSON(1, setArticleData)}
-          className="m-0 p-0"
-        >
-          Use Example JSON - 20/06/2023
-        </button>
       </div>
-      <Data
-        data={JSON.stringify(articleData, null, 2)}
-        index={1}
-        onChange={(event) => onDataChange(event.target.value, setArticleData)}
-      />
-      <Export
-        filename={campaignFilename}
-        onChange={onCampaignFilenameChange}
-        onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
-        exportType="Template"
-      />
-      <Settings
-        renderMJML={renderMJML}
-        setRenderMJML={setRenderMJML}
-        renderVTL={renderVTL}
-        setRenderVTL={setRenderVTL}
-      />
-    </>
+      <div className="settings-slice">
+        <Export
+          filename={campaignFilename}
+          onChange={onCampaignFilenameChange}
+          onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
+          exportType="Template"
+        />
+        <Settings
+          renderMJML={renderMJML}
+          setRenderMJML={setRenderMJML}
+          renderVTL={renderVTL}
+          setRenderVTL={setRenderVTL}
+        />
+      </div>
+    </div>
   );
 }
 

@@ -6,7 +6,7 @@ const Settings = ({ renderMJML, renderVTL, setRenderMJML, setRenderVTL }) => {
   const toggleRenderVTL = () => setRenderVTL(!renderVTL);
 
   return (
-    <div>
+    <div className="d-flex align-items-center align-right">
       <div>
         <input
           type="checkbox"
