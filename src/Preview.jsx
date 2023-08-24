@@ -4,6 +4,16 @@ import pretty from "pretty";
 const Preview = ({ html }) => {
   const [currentTab, setCurrentTab] = useState("Preview");
 
+  const copyHTMLToClipboard = () => {
+    if (navigator.clipboard) {
+      navigator.clipboard
+        .writeText(html)
+        .then(() => {})
+        .catch(() => {});
+    }
+    alert("HTML copied to clipboard");
+  };
+
   return (
     <div>
       <div className="section-titles-container">
@@ -14,6 +24,11 @@ const Preview = ({ html }) => {
           <div className="section-titles">
             <button onClick={() => setCurrentTab("HTML")}>HTML</button>
           </div>
+          {currentTab === "HTML" && (
+            <div className="section-titles">
+              <button onClick={copyHTMLToClipboard}>Copy</button>
+            </div>
+          )}
         </div>
       </div>
       <div>
