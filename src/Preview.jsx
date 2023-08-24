@@ -7,14 +7,13 @@ const Preview = ({ html }) => {
   return (
     <div>
       <div className="section-titles-container">
-        <div className="section-titles">
-          <a href="#" onClick={() => setCurrentTab("Preview")}>
-            Preview
-          </a>{" "}
-          |{" "}
-          <a href="#" onClick={() => setCurrentTab("HTML")}>
-            HTML
-          </a>
+        <div className="d-flex">
+          <div className="section-titles">
+            <button onClick={() => setCurrentTab("Preview")}>Preview</button>
+          </div>
+          <div className="section-titles">
+            <button onClick={() => setCurrentTab("HTML")}>HTML</button>
+          </div>
         </div>
       </div>
       <div>
