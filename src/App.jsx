@@ -50,6 +50,7 @@ function App() {
           // First render (with article placeholders)
           output = Velocity.render(output, {
             ...editionData,
+            ...articleData,
             ebx: {
               isCustomBlock: (string) => string.includes("@@@"),
               getBlockType: (string) =>
@@ -184,7 +185,7 @@ function App() {
           <div className="section-titles-container">
             <div className="d-flex">
               <div className="section-titles">
-                Data (Edition data with placeholder articles)
+                Data (Edition data with placeholder articles and branding)
               </div>
               <div className="section-titles">
                 <button onClick={() => handleUseExampleJSON(0, setEditionData)}>
