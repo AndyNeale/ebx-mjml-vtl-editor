@@ -33,15 +33,18 @@ function App() {
 
   useEffect(() => {
     if (debouncedContent) {
-      let output = debouncedContent.replace(
-        /(^ *)(#[\S ]+)([\n\r])/gm,
-        "$1<mj-raw>$2</mj-raw>$3"
-      );
-      // Also wrap escaped velocity directives
-      output = output.replace(
-        /(^ *)(\\#[\S ]+)([\n\r])/gm,
-        "$1<mj-raw>$2</mj-raw>$3"
-      );
+      let output = debouncedContent;
+      if (renderMJML) {
+        // Wrap Velocity directives in mj-raw tags
+        output = debouncedContent.replace(
+          /(^ *)(#[\S ]+)([\n\r])/gm,
+          "$1<mj-raw>$2</mj-raw>$3"
+        );
+        output = output.replace(
+          /(^ *)(\\#[\S ]+)([\n\r])/gm,
+          "$1<mj-raw>$2</mj-raw>$3"
+        );
+      }
       if (renderVTL) {
         try {
           // First render (with article placeholders)
