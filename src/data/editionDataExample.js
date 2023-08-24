@@ -12,21 +12,21 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL1",
           title: "$articleTitle1",
           description: "$articleDescription1",
-          imageURL: "$articleImageURL1"
+          imageURL: "$articleImageURL1",
         },
         {
           articleURL: "$articleShareURL2",
           title: "$articleTitle2",
           description: "$articleDescription2",
-          imageURL: "$articleImageURL2"
+          imageURL: "$articleImageURL2",
         },
         {
           articleURL: "$articleShareURL3",
           title: "$articleTitle3",
           description: "$articleDescription3",
-          imageURL: "$articleImageURL3"
-        }
-      ]
+          imageURL: "$articleImageURL3",
+        },
+      ],
     },
     {
       sectionName: "Web",
@@ -38,15 +38,15 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL4",
           title: "$articleTitle4",
           description: "$articleDescription4",
-          imageURL: "$articleImageURL4"
+          imageURL: "$articleImageURL4",
         },
         {
           articleURL: "$articleShareURL5",
           title: "$articleTitle5",
           description: "$articleDescription5",
-          imageURL: "$articleImageURL5"
-        }
-      ]
+          imageURL: "$articleImageURL5",
+        },
+      ],
     },
     {
       sectionName: "Echobox",
@@ -58,21 +58,21 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL6",
           title: "$articleTitle6",
           description: "$articleDescription6",
-          imageURL: "$articleImageURL6"
+          imageURL: "$articleImageURL6",
         },
         {
           articleURL: "$articleShareURL7",
           title: "$articleTitle7",
           description: "$articleDescription7",
-          imageURL: "$articleImageURL7"
+          imageURL: "$articleImageURL7",
         },
         {
           articleURL: "$articleShareURL8",
           title: "$articleTitle8",
           description: "$articleDescription8",
-          imageURL: "$articleImageURL8"
-        }
-      ]
+          imageURL: "$articleImageURL8",
+        },
+      ],
     },
     {
       sectionName: "Four Articles",
@@ -85,27 +85,27 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL9",
           title: "$articleTitle9",
           description: "$articleDescription9",
-          imageURL: "$articleImageURL9"
+          imageURL: "$articleImageURL9",
         },
         {
           articleURL: "$articleShareURL10",
           title: "$articleTitle10",
           description: "$articleDescription10",
-          imageURL: "$articleImageURL10"
+          imageURL: "$articleImageURL10",
         },
         {
           articleURL: "$articleShareURL11",
           title: "$articleTitle11",
           description: "$articleDescription11",
-          imageURL: "$articleImageURL11"
+          imageURL: "$articleImageURL11",
         },
         {
           articleURL: "$articleShareURL12",
           title: "$articleTitle12",
           description: "$articleDescription12",
-          imageURL: "$articleImageURL12"
-        }
-      ]
+          imageURL: "$articleImageURL12",
+        },
+      ],
     },
     {
       sectionName: "One Article",
@@ -117,9 +117,9 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL13",
           title: "$articleTitle13",
           description: "$articleDescription13",
-          imageURL: "$articleImageURL13"
-        }
-      ]
+          imageURL: "$articleImageURL13",
+        },
+      ],
     },
     {
       sectionName: "One Article With No Image",
@@ -131,15 +131,15 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL14",
           title: "$articleTitle14",
           description: "$articleDescription14",
-          imageURL: "$articleImageURL14"
+          imageURL: "$articleImageURL14",
         },
         {
           articleURL: "$articleShareURL15",
           title: "$articleTitle15",
           description: "$articleDescription15",
-          imageURL: "$articleImageURL15"
-        }
-      ]
+          imageURL: "$articleImageURL15",
+        },
+      ],
     },
     {
       sectionName: "Two Articles With No Image",
@@ -151,16 +151,16 @@ export const EXAMPLE_EDITION_DATA = {
           articleURL: "$articleShareURL16",
           title: "$articleTitle16",
           description: "$articleDescription16",
-          imageURL: "$articleImageURL16"
+          imageURL: "$articleImageURL16",
         },
         {
           articleURL: "$articleShareURL17",
           title: "$articleTitle17",
           description: "$articleDescription17",
-          imageURL: "$articleImageURL17"
-        }
-      ]
-    }
+          imageURL: "$articleImageURL17",
+        },
+      ],
+    },
   ],
   textBlocks: [
     {
@@ -168,9 +168,9 @@ export const EXAMPLE_EDITION_DATA = {
         "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb91",
       textBlockTitle: "Test Title - This is a test",
       textBlockBody:
-        "<p>This is a test</p><p>Test Link : <a href='https://www.google.com/' target='_blank'>Google</a>&nbsp;</p></div>",
+        "<p>This is a test</p><p>Test Link : <a href='https://www.google.com/' target='_blank'>Google</a>&nbsp;</p>",
       imageURL:
-        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0"
+        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0",
     },
     {
       textBlockURN:
@@ -178,21 +178,21 @@ export const EXAMPLE_EDITION_DATA = {
       textBlockTitle: "",
       textBlockBody:
         "<p>This is a test</p><p>Test Link : <a href='https://www.google.com/' target='_blank'>Google</a>&nbsp;</p></div>",
-      imageURL: ""
+      imageURL: "",
     },
     {
       textBlockURN:
         "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb93",
       textBlockTitle: "Test Title",
       textBlockBody: "",
-      imageURL: ""
+      imageURL: "",
     },
     {
       textBlockURN:
         "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb94",
       textBlockTitle: "Test Title",
       textBlockBody: "<p>This is a test</p>",
-      imageURL: ""
+      imageURL: "",
     },
     {
       textBlockURN:
@@ -200,7 +200,7 @@ export const EXAMPLE_EDITION_DATA = {
       textBlockTitle: "Test Title",
       textBlockBody: "",
       imageURL:
-        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0"
+        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0",
     },
     {
       textBlockURN:
@@ -208,7 +208,7 @@ export const EXAMPLE_EDITION_DATA = {
       textBlockTitle: "",
       textBlockBody: "This is a test",
       imageURL:
-        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0"
+        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0",
     },
     {
       textBlockURN:
@@ -216,8 +216,8 @@ export const EXAMPLE_EDITION_DATA = {
       textBlockTitle: "",
       textBlockBody: "",
       imageURL:
-        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0"
-    }
+        "https://i.guim.co.uk/img/media/cac17663240b12e92e6b9bf16e3ccf03459967ab/488_410_2101_1261/master/2101.jpg?width=1020&quality=85&auto=format&fit=max&s=8d38eb42a73baf5190a55f4ac1276bf0",
+    },
   ],
   promotionBlocks: [
     {
@@ -225,7 +225,7 @@ export const EXAMPLE_EDITION_DATA = {
         "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:promotionblock:c231a4da-9aef-4536-9845-33fe275aeb91",
       imageURL: "https://i.imgur.com/z8JR4i1.png",
       destinationURL: "https://www.newyorker.com/",
-      bodyPosition: 1
+      bodyPosition: 1,
     },
     {
       promotionBlockURN:
@@ -233,7 +233,7 @@ export const EXAMPLE_EDITION_DATA = {
       imageURL:
         "https://www.coolmilk.com/wp-content/uploads/250-newsletter-banner-advert.png",
       destinationURL: "https://www.coolmilk.com/",
-      bodyPosition: 3
+      bodyPosition: 3,
     },
     {
       promotionBlockURN:
@@ -241,62 +241,62 @@ export const EXAMPLE_EDITION_DATA = {
       imageURL: "https://thedirect.s3.amazonaws.com/media/photos/mandos2p1.jpg",
       destinationURL:
         "https://disneyplusoriginals.disney.com/show/the-mandalorian",
-      bodyPosition: 5
-    }
+      bodyPosition: 5,
+    },
   ],
   bodyElementPositioning: [
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb91"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb91",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb91"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb91",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:promotionblock:c231a4da-9aef-4536-9845-33fe275aeb91"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:promotionblock:c231a4da-9aef-4536-9845-33fe275aeb91",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb92"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb92",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb92"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb92",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb93"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb93",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb93"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb93",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:promotionblock:c231a4da-9aef-4536-9845-33fe275aeb93"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:promotionblock:c231a4da-9aef-4536-9845-33fe275aeb93",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb94"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb94",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb94"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:section:a231a4da-9aef-4536-9845-33fe275aeb94",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb95"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb95",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb96"
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb96",
     },
     {
       elementURN:
-        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb97"
-    }
+        "urn:newsletter:campaign:d59028ac-9019-4c1a-b787-9e5fc80f9666:textblock:b231a4da-9aef-4536-9845-33fe275aeb97",
+    },
   ],
   campaignName: "CAMPAIGN'S NAME",
   campaignGUID: "4bb4f503-abfe-446c-aa7e-e203f66196e2",
@@ -317,7 +317,7 @@ export const EXAMPLE_EDITION_DATA = {
     instagram: "INSTAGRAM_PAGE",
     youtube: "YOUTUBE_PAGE",
     pinterest: "PINTEREST_PAGE",
-    tiktok: "TIKTOK_PAGE"
+    tiktok: "TIKTOK_PAGE",
   },
   accentColour: "08678f",
   bodyFont: "Open Sans",
@@ -333,5 +333,5 @@ export const EXAMPLE_EDITION_DATA = {
   unsubscribeURL: "https://www.echobox.com/unsubscribe",
   sponsoredContentLabel: "Sponsored",
   manageYourPreferencesLinkText: "Manage your preferences",
-  manageYourPreferencesURL: "https://www.echobox.com/manage"
+  manageYourPreferencesURL: "https://www.echobox.com/manage",
 };
