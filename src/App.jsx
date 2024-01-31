@@ -28,7 +28,7 @@ function App() {
   const [editionData, setEditionData] = useState({});
   const [articleData, setArticleData] = useState({});
   const [campaignFilename, setCampaignFilename] = useState("template");
-  const [renderMJML, setRenderMJML] = useState(true);
+  const [renderMJML, setRenderMJML] = useState(false);
   const [renderVTL, setRenderVTL] = useState(true);
 
   useEffect(() => {
@@ -36,14 +36,8 @@ function App() {
       let output = debouncedContent;
       if (renderMJML) {
         // Wrap Velocity directives in mj-raw tags
-        output = debouncedContent.replace(
-          /(^ *)(#[\S ]+)([\n\r])/gm,
-          "$1<mj-raw>$2</mj-raw>$3"
-        );
-        output = output.replace(
-          /(^ *)(\\#[\S ]+)([\n\r])/gm,
-          "$1<mj-raw>$2</mj-raw>$3"
-        );
+        output = debouncedContent.replace(/(^ *)(#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
+        output = output.replace(/(^ *)(\\#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
       }
       if (renderVTL) {
         try {
@@ -53,10 +47,7 @@ function App() {
             ...articleData,
             ebx: {
               isCustomBlock: (string) => string.includes("@@@"),
-              getBlockType: (string) =>
-                string
-                  .replaceAll("@@@", "")
-                  .replace("urn:newsletter:block:", ""),
+              getBlockType: (string) => string.replaceAll("@@@", "").replace("urn:newsletter:block:", ""),
             },
             json: {
               parse: (string) => new Map(Object.entries(JSON.parse(string))),
@@ -116,15 +107,9 @@ function App() {
       return;
     }
 
-    let escaped = debouncedContent.replace(
-      /(^ *)(#[\S ]+)([\n\r])/gm,
-      "$1<mj-raw>$2</mj-raw>$3"
-    );
+    let escaped = debouncedContent.replace(/(^ *)(#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
     // Also wrap escaped velocity directives
-    escaped = escaped.replace(
-      /(^ *)(\\#[\S ]+)([\n\r])/gm,
-      "$1<mj-raw>$2</mj-raw>$3"
-    );
+    escaped = escaped.replace(/(^ *)(\\#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
     // console.log(escaped);
     let vtl;
     try {
@@ -142,8 +127,7 @@ function App() {
     }
   };
 
-  const onCampaignFilenameChange = (event) =>
-    setCampaignFilename(event.target.value);
+  const onCampaignFilenameChange = (event) => setCampaignFilename(event.target.value);
 
   const handleUseExampleJSON = (index, setter) => {
     let json;
@@ -166,13 +150,7 @@ function App() {
           <div className="section-titles-container">
             <div className="section-titles">Editor</div>
           </div>
-          <Editor
-            className="editor"
-            defaultLanguage="html"
-            defaultValue=""
-            onChange={onEditorChange}
-            onMount={onEditorMount}
-          />
+          <Editor className="editor" defaultLanguage="html" defaultValue="" onChange={onEditorChange} onMount={onEditorMount} />
         </div>
         <div className="top-right">
           <div className="preview-container">
@@ -184,59 +162,29 @@ function App() {
         <div className="top-left">
           <div className="section-titles-container">
             <div className="d-flex">
+              <div className="section-titles">Data (Edition data with placeholder articles and branding)</div>
               <div className="section-titles">
-                Data (Edition data with placeholder articles and branding)
-              </div>
-              <div className="section-titles">
-                <button onClick={() => handleUseExampleJSON(0, setEditionData)}>
-                  Use Example JSON - 20/06/2023
-                </button>
+                <button onClick={() => handleUseExampleJSON(0, setEditionData)}>Use Example JSON - 20/06/2023</button>
               </div>
             </div>
           </div>
-          <Data
-            data={JSON.stringify(editionData, null, 2)}
-            index={0}
-            onChange={(event) =>
-              onDataChange(event.target.value, setEditionData)
-            }
-          />
+          <Data data={JSON.stringify(editionData, null, 2)} index={0} onChange={(event) => onDataChange(event.target.value, setEditionData)} />
         </div>
         <div className="top-right">
           <div className="section-titles-container">
             <div className="d-flex">
+              <div className="section-titles">Data (Article and personalisation data)</div>
               <div className="section-titles">
-                Data (Article and personalisation data)
-              </div>
-              <div className="section-titles">
-                <button onClick={() => handleUseExampleJSON(1, setArticleData)}>
-                  Use Example JSON - 20/06/2023
-                </button>
+                <button onClick={() => handleUseExampleJSON(1, setArticleData)}>Use Example JSON - 20/06/2023</button>
               </div>
             </div>
           </div>
-          <Data
-            data={JSON.stringify(articleData, null, 2)}
-            index={1}
-            onChange={(event) =>
-              onDataChange(event.target.value, setArticleData)
-            }
-          />
+          <Data data={JSON.stringify(articleData, null, 2)} index={1} onChange={(event) => onDataChange(event.target.value, setArticleData)} />
         </div>
       </div>
       <div className="settings-slice">
-        <Export
-          filename={campaignFilename}
-          onChange={onCampaignFilenameChange}
-          onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)}
-          exportType="Template"
-        />
-        <Settings
-          renderMJML={renderMJML}
-          setRenderMJML={setRenderMJML}
-          renderVTL={renderVTL}
-          setRenderVTL={setRenderVTL}
-        />
+        <Export filename={campaignFilename} onChange={onCampaignFilenameChange} onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)} exportType="Template" />
+        <Settings renderMJML={renderMJML} setRenderMJML={setRenderMJML} renderVTL={renderVTL} setRenderVTL={setRenderVTL} />
       </div>
     </div>
   );
