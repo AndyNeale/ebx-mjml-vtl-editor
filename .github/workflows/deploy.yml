@@ -16,21 +16,23 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x] # We will deploy with only one version of node
+        node-version: [24.x] # We will deploy with only one version of node
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+      - name: Checkout code
+        uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-      - name: yarn build
+      - name: Build project
         run: |
-          yarn install
-          yarn build
-      - name: deploy to gh-pages
+          bun install
+          bun run build
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
