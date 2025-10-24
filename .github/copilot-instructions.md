@@ -17,7 +17,7 @@ This is a React-based MJML-VTL Editor application that provides a web interface 
 - **Code Editor**: Monaco Editor (@monaco-editor/react)
 - **Email Markup**: MJML (mjml-browser)
 - **Template Engine**: Velocity Template Language (velocityjs)
-- **Package Manager**: npm (with bun.lock for reference)
+- **Package Manager**: Bun (with bun.lock)
 - **Deployment**: GitHub Pages via GitHub Actions
 - **Styling**: CSS with custom classes
 
@@ -45,11 +45,10 @@ This is a React-based MJML-VTL Editor application that provides a web interface 
 ## Development Workflow
 
 ### Building and Testing
-- **Install dependencies**: `npm install`
-- **Development server**: `npm run dev` or `npm start`
-- **Production build**: `npm run build`
-- **Preview build**: `npm run preview`
-- **Deploy**: `npm run deploy` (builds and deploys to GitHub Pages)
+- **Install dependencies**: `bun install`
+- **Development server**: `bun start`
+- **Production build**: `bun run build`
+- **Deploy**: `bun run deploy` (builds and deploys to GitHub Pages)
 
 ### Code Style and Conventions
 
@@ -145,7 +144,7 @@ const onSomethingChange = (event) => {
 
 Since this is a UI-heavy application:
 - **Manual testing**: Always test in browser after changes
-- **Build verification**: Run `npm run build` to ensure no build errors
+- **Build verification**: Run `bun run build` to ensure no build errors
 - **Cross-browser**: Test in Chrome/Firefox for Monaco Editor compatibility
 - **Template testing**: Use example JSON data to verify rendering pipeline
 
@@ -216,7 +215,7 @@ When creating issues for this repository:
 ## Deployment
 
 The application deploys automatically to GitHub Pages when changes are pushed to the main branch. The deployment:
-- Builds the application with `npm run build`
+- Builds the application with `bun run build`
 - Publishes the `build` directory to GitHub Pages
 - Uses Node.js 24.x in the CI environment
 
