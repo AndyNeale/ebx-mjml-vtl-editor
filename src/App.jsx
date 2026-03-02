@@ -41,6 +41,8 @@ function App() {
       }
       if (renderVTL) {
         try {
+          // Remove delayed evaluation code
+          output = output.replaceAll("\\\\\\", "");
           // First render (with article placeholders)
           output = Velocity.render(output, {
             ...editionData,
@@ -60,6 +62,8 @@ function App() {
           output = Velocity.render(output, {
             ...articleData,
           });
+          // Remove unresolved categories
+          output = output.replaceAll("${article.metadata.categories}", "");
         } catch (error) {
           console.log("VTL rendering error", error);
         }
