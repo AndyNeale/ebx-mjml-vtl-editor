@@ -21,7 +21,7 @@
     "@vitejs/plugin-react": "^5.1.0",
     "gh-pages": "^5.0.0",
     "typescript": "^4.8.4",
-    "vite": "^7.1.12"
+    "vite": "^7.3.2"
   },
   "homepage": "https://AndyNeale.github.io/ebx-mjml-vtl-editor",
   "keywords": [],
