@@ -15,6 +15,29 @@ const Preview = ({ html }) => {
     alert("HTML copied to clipboard");
   };
 
+  function formatFileSize(bytes) {
+    let size = bytes;
+    const multiplier = 1024;
+    if (Math.abs(size) < multiplier) {
+      return `${size}B`;
+    }
+    const units = ["kB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
+    let unit = -1;
+    do {
+      size /= multiplier;
+      unit += 1;
+    } while (Math.abs(size) >= multiplier && unit < units.length - 1);
+    return `${size.toFixed(0)}${units[unit]}`;
+  }
+
+  function stripWhitespace(str) {
+    return str
+      .replace(/\n/g, "")
+      .replace(/[\t ]+\</g, "<")
+      .replace(/\>[\t ]+\</g, "><")
+      .replace(/\>[\t ]+$/g, ">");
+  }
+
   return (
     <div>
       <div className="section-titles-container">
@@ -43,6 +66,9 @@ const Preview = ({ html }) => {
             <button onClick={() => setDesktop(false)} className={isDesktop ? "" : "active"}>
               Mobile
             </button>
+          </div>
+          <div style={{ fontSize: "14px", padding: "2px 5px" }}>
+            {formatFileSize(html.length)} / {formatFileSize(stripWhitespace(html).length)}
           </div>
         </div>
       </div>
