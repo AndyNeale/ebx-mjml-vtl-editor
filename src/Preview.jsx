@@ -30,13 +30,39 @@ const Preview = ({ html }) => {
     return `${size.toFixed(0)}${units[unit]}`;
   }
 
-  function stripWhitespace(str) {
-    return str
-      .replace(/\n/g, "")
-      .replace(/[\t ]+\</g, "<")
-      .replace(/\>[\t ]+\</g, "><")
-      .replace(/\>[\t ]+$/g, ">");
+  function minifyCSS(html) {
+    // Regex explanation:
+    // <style.*?>      -> Matches the opening tag (handles attributes like type="text/css")
+    // ([\s\S]*?)      -> Capture group: matches everything inside (including newlines)
+    // <\/style>       -> Matches the closing tag
+    const styleTagRegex = /<style.*?>([\s\S]*?)<\/style>/gi;
+    return html.replace(styleTagRegex, (match, cssContent) => {
+      const minified = cssContent
+        .replace(/\/\*[\s\S]*?\*\//g, "") // Remove comments
+        .replace(/\s*([{}|:;,])\s*/g, "$1") // Remove spaces around syntax
+        .replace(/\s+/g, " ") // Collapse whitespace
+        .trim();
+      // Reconstruct the tag (keeping the original opening tag attributes)
+      const openingTag = match.match(/<style.*?>/i)?.[0] || "<style>";
+      return `${openingTag}${minified}</style>`;
+    });
   }
+
+  function stripWhitespace(html) {
+    return (
+      html
+        // Remove newlines
+        .replace(/\n/g, "")
+        // Remove leading tabs and spaces
+        .replace(/[\t ]+\</g, "<")
+        // Remove spaces between tags
+        .replace(/\>[\t ]+\</g, "><")
+        // Remove trailing tabs and spaces
+        .replace(/\>[\t ]+$/g, ">")
+    );
+  }
+
+  const minified = stripWhitespace(minifyCSS(html ?? ""));
 
   return (
     <div>
@@ -50,6 +76,11 @@ const Preview = ({ html }) => {
           <div className="section-titles">
             <button onClick={() => setCurrentTab("HTML")} className={currentTab === "HTML" ? "active" : ""}>
               HTML
+            </button>
+          </div>
+          <div className="section-titles">
+            <button onClick={() => setCurrentTab("Minified")} className={currentTab === "Minified" ? "active" : ""}>
+              Minified
             </button>
           </div>
           {currentTab === "HTML" && (
@@ -68,18 +99,24 @@ const Preview = ({ html }) => {
             </button>
           </div>
           <div style={{ fontSize: "14px", padding: "2px 5px" }}>
-            {formatFileSize((html ?? "").length)} / {formatFileSize(stripWhitespace(html ?? "").length)}
+            {formatFileSize((html ?? "").length)} / {formatFileSize(minified.length)}
           </div>
         </div>
       </div>
       <div>
-        {currentTab === "Preview" ? (
+        {currentTab === "Preview" && (
           <div className="preview">
             <iframe className={isDesktop ? "desktop" : "mobile"} id="previewIframe" loading="lazy" srcDoc={html} title="Edition Preview" allowFullScreen />
           </div>
-        ) : (
+        )}
+        {currentTab === "HTML" && (
           <div className="preview html">
             <pre>{pretty(html ?? "")}</pre>
+          </div>
+        )}
+        {currentTab === "Minified" && (
+          <div className="preview html">
+            <pre>{minified}</pre>
           </div>
         )}
       </div>
