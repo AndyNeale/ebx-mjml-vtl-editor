@@ -1,0 +1,40 @@
+version: 2
+
+registries:
+  npm-ebx-ui:
+    type: npm-registry
+    url: https://echobox-060610571733.d.codeartifact.eu-west-1.amazonaws.com/npm/ebx-ui/
+    token: ${{secrets.CODEARTIFACT_TOKEN}}
+
+updates:
+  - package-ecosystem: bun
+    directory: "/"
+    registries: "*"
+
+    schedule:
+      interval: "weekly"
+      day: "sunday"
+      time: "17:00"
+
+    groups:
+      # Group specific dependencies that need to be updated together
+      react:
+        patterns:
+          - "react"
+          - "react-dom"
+      typescript-eslint:
+        patterns:
+          - "@typescript-eslint/*"
+
+      # Catch all remaining patch/minor developer dependencies
+      developer-dependencies:
+        dependency-type: "development"
+        update-types:
+          - "patch"
+          - "minor"
+
+      # Catch all patch production dependencies
+      production-dependencies:
+        dependency-type: "production"
+        update-types:
+          - "patch"
