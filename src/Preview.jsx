@@ -68,7 +68,7 @@ const Preview = ({ html }) => {
             </button>
           </div>
           <div style={{ fontSize: "14px", padding: "2px 5px" }}>
-            {formatFileSize(html.length)} / {formatFileSize(stripWhitespace(html).length)}
+            {formatFileSize((html ?? "").length)} / {formatFileSize(stripWhitespace(html ?? "").length)}
           </div>
         </div>
       </div>
@@ -79,7 +79,7 @@ const Preview = ({ html }) => {
           </div>
         ) : (
           <div className="preview html">
-            <pre>{pretty(html)}</pre>
+            <pre>{pretty(html ?? "")}</pre>
           </div>
         )}
       </div>
