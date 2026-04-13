@@ -52,13 +52,13 @@ const Preview = ({ html }) => {
     return (
       html
         // Remove newlines
-        .replace(/\n/g, "")
+        .replace(/[\n\r]+/g, "")
         // Remove leading tabs and spaces
-        .replace(/[\t ]+\</g, "<")
+        .replace(/[\t ]+</g, "<")
         // Remove spaces between tags
-        .replace(/\>[\t ]+\</g, "><")
+        .replace(/>[\t ]+</g, "><")
         // Remove trailing tabs and spaces
-        .replace(/\>[\t ]+$/g, ">")
+        .replace(/>[\t ]+$/g, ">")
     );
   }
 
