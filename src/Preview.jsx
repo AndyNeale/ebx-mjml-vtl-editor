@@ -65,45 +65,30 @@ const Preview = ({ html }) => {
   const minified = stripWhitespace(minifyCSS(html ?? ""));
 
   return (
-    <div>
-      <div className="section-titles-container">
-        <div className="d-flex">
-          <div className="section-titles">
-            <button onClick={() => setCurrentTab("Preview")} className={currentTab === "Preview" ? "active" : ""}>
-              Preview
-            </button>
-          </div>
-          <div className="section-titles">
-            <button onClick={() => setCurrentTab("HTML")} className={currentTab === "HTML" ? "active" : ""}>
-              HTML
-            </button>
-          </div>
-          <div className="section-titles">
-            <button onClick={() => setCurrentTab("Minified")} className={currentTab === "Minified" ? "active" : ""}>
-              Minified
-            </button>
-          </div>
-          {currentTab === "HTML" && (
-            <div className="section-titles">
-              <button onClick={copyHTMLToClipboard}>Copy</button>
-            </div>
-          )}
-          <div className="section-titles">
-            <button onClick={() => setDesktop(true)} className={isDesktop ? "active" : ""}>
-              Desktop
-            </button>
-          </div>
-          <div className="section-titles">
-            <button onClick={() => setDesktop(false)} className={isDesktop ? "" : "active"}>
-              Mobile
-            </button>
-          </div>
-          <div style={{ fontSize: "14px", padding: "2px 5px" }}>
-            {formatFileSize((html ?? "").length)} / {formatFileSize(minified.length)}
-          </div>
-        </div>
+    <div className="preview-panel">
+      <div className="toolbar">
+        <button onClick={() => setCurrentTab("Preview")} className={currentTab === "Preview" ? "active" : ""}>
+          Preview
+        </button>
+        <button onClick={() => setCurrentTab("HTML")} className={currentTab === "HTML" ? "active" : ""}>
+          HTML
+        </button>
+        <button onClick={() => setCurrentTab("Minified")} className={currentTab === "Minified" ? "active" : ""}>
+          Minified
+        </button>
+        {currentTab === "HTML" && <button onClick={copyHTMLToClipboard}>Copy</button>}
+        <span className="toolbar-spacer" />
+        <button onClick={() => setDesktop(true)} className={isDesktop ? "active" : ""}>
+          Desktop
+        </button>
+        <button onClick={() => setDesktop(false)} className={isDesktop ? "" : "active"}>
+          Mobile
+        </button>
+        <span className="file-size">
+          {formatFileSize((html ?? "").length)} / {formatFileSize(minified.length)}
+        </span>
       </div>
-      <div>
+      <div className="preview-body">
         {currentTab === "Preview" && (
           <div className="preview">
             <iframe className={isDesktop ? "desktop" : "mobile"} id="previewIframe" loading="lazy" srcDoc={html} title="Edition Preview" allowFullScreen />

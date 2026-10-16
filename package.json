@@ -7,8 +7,6 @@
   ],
   "dependencies": {
     "@monaco-editor/react": "^4.7.0",
-    "file-saver": "^2.0.5",
-    "mjml-browser": "^4.16.1",
     "monaco-editor": "^0.55.1",
     "pretty": "^2.0.0",
     "react": "^18.2.0",
