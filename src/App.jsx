@@ -1,25 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import Editor from "@monaco-editor/react";
-import mjml2html from "mjml-browser";
-import FileSaver from "file-saver";
 import Velocity from "velocityjs";
 
-import Data from "./Data";
-import Export from "./Export";
 import Preview from "./Preview";
-import Settings from "./Settings";
-
 import useDebounce from "./useDebounce";
-
-import { EXAMPLE_EDITION_DATA } from "./data/editionDataExample";
-import { EXAMPLE_ARTICLE_DATA } from "./data/articleDataExample";
 
 import "./styles.css";
 
-const EXPORT_TYPE = {
-  ENCODED: "ENCODED",
-  NOT_ENCODED: "NOT ENCODED",
-};
+const MIN_SECTION_HEIGHT = 80;
+const MIN_COLUMN_WIDTH = 200;
+
+const SECTIONS = [
+  { key: "editor", title: "Editor", language: "html" },
+  { key: "edition", title: "Edition configuration", language: "json" },
+  { key: "branding", title: "Branding configuration", language: "json" },
+];
 
 function App() {
   const [rawContent, setRawContent] = useState(null);
@@ -27,168 +22,134 @@ function App() {
   const [renderedContent, setRenderedContent] = useState(null);
   const [editionData, setEditionData] = useState({});
   const [articleData, setArticleData] = useState({});
-  const [campaignFilename, setCampaignFilename] = useState("template");
-  const [renderMJML, setRenderMJML] = useState(false);
-  const [renderVTL, setRenderVTL] = useState(true);
+  const [openSections, setOpenSections] = useState({ editor: true, edition: false, branding: false });
+  const [sectionWeights, setSectionWeights] = useState({ editor: 1, edition: 1, branding: 1 });
+  const [leftWidth, setLeftWidth] = useState(() => Math.round(window.innerWidth * 0.5));
+  const sectionRefs = useRef({});
+  const containerRef = useRef(null);
 
   useEffect(() => {
     if (debouncedContent) {
       let output = debouncedContent;
-      if (renderMJML) {
-        // Wrap Velocity directives in mj-raw tags
-        output = debouncedContent.replace(/(^ *)(#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
-        output = output.replace(/(^ *)(\\#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
-      }
-      if (renderVTL) {
-        try {
-          // Remove delayed evaluation code
-          output = output.replaceAll("\\\\\\", "");
-          // First render (with article placeholders)
-          output = Velocity.render(output, {
-            ...editionData,
-            ...articleData,
-            ebx: {
-              isCustomBlock: (string) => string.includes("@@@"),
-              getBlockType: (string) => string.replaceAll("@@@", "").replace("urn:newsletter:block:", ""),
-            },
-            json: {
-              parse: (string) => new Map(Object.entries(JSON.parse(string))),
-            },
-            html: {
-              decode: (string) => decodeURIComponent(string),
-            },
-          });
-          // Second render (with article data)
-          output = Velocity.render(output, {
-            ...articleData,
-          });
-          // Remove unresolved categories
-          output = output.replaceAll("${article.metadata.categories}", "");
-        } catch (error) {
-          console.log("VTL rendering error", error);
-        }
-      } else {
-        //
-      }
-      if (renderMJML) {
-        try {
-          output = mjml2html(output).html;
-        } catch (error) {
-          console.log("MJML rendering error", error);
-          return;
-        }
-      } else {
-        //
+      try {
+        // Remove delayed evaluation code
+        output = output.replaceAll("\\\\\\", "");
+        // First render (with article placeholders)
+        output = Velocity.render(output, {
+          ...editionData,
+          ...articleData,
+          ebx: {
+            isCustomBlock: (string) => string.includes("@@@"),
+            getBlockType: (string) => string.replaceAll("@@@", "").replace("urn:newsletter:block:", ""),
+          },
+          json: {
+            parse: (string) => new Map(Object.entries(JSON.parse(string))),
+          },
+          html: {
+            decode: (string) => decodeURIComponent(string),
+          },
+        });
+        // Second render (with article data)
+        output = Velocity.render(output, {
+          ...articleData,
+        });
+        // Remove unresolved categories
+        output = output.replaceAll("${article.metadata.categories}", "");
+      } catch (error) {
+        console.log("VTL rendering error", error);
       }
       setRenderedContent(output);
     }
-  }, [debouncedContent, articleData, editionData, renderMJML, renderVTL]);
-
-  const editorRef = useRef(null);
+  }, [debouncedContent, articleData, editionData]);
 
   const onDataChange = (data, setter) => {
     try {
-      const json = JSON.parse(data);
-      setter(json);
+      setter(JSON.parse(data));
     } catch (error) {
-      // console.log('DATA ERROR');
-      // console.log(error);
+      // Ignore invalid JSON while typing
     }
   };
 
-  const onEditorChange = (value) => {
-    // console.log("onChange");
-    setRawContent(value);
+  const onChangeFor = {
+    editor: (value) => setRawContent(value),
+    edition: (value) => onDataChange(value, setEditionData),
+    branding: (value) => onDataChange(value, setArticleData),
   };
 
-  const onEditorMount = (editor) => {
-    // console.log("onMount");
-    editorRef.current = editor;
+  const toggleSection = (key) => setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+
+  // Drag handling: pointer capture keeps events flowing even over the preview iframe
+  const startDrag = (event, onMove) => {
+    event.preventDefault();
+    const target = event.currentTarget;
+    target.setPointerCapture(event.pointerId);
+    const startX = event.clientX;
+    const startY = event.clientY;
+    const move = (e) => onMove(e.clientX - startX, e.clientY - startY);
+    const end = () => {
+      target.removeEventListener("pointermove", move);
+      target.removeEventListener("pointerup", end);
+      target.removeEventListener("pointercancel", end);
+    };
+    target.addEventListener("pointermove", move);
+    target.addEventListener("pointerup", end);
+    target.addEventListener("pointercancel", end);
   };
 
-  const onExport = (filename, fileType) => {
-    if (!debouncedContent) {
-      return;
-    }
-
-    let escaped = debouncedContent.replace(/(^ *)(#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
-    // Also wrap escaped velocity directives
-    escaped = escaped.replace(/(^ *)(\\#[\S ]+)([\n\r])/gm, "$1<mj-raw>$2</mj-raw>$3");
-    // console.log(escaped);
-    let vtl;
-    try {
-      vtl = mjml2html(escaped).html;
-    } catch (error) {
-      console.log("Export error", error);
-      return;
-    }
-
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(vtl, `${filename}.vtl`);
-    } else {
-      const blob = new Blob([vtl], { type: "text/plain;charset=utf-8" });
-      FileSaver.saveAs(blob, `${filename}.vtl`);
-    }
+  const onColumnDividerDown = (event) => {
+    const startWidth = leftWidth;
+    const max = containerRef.current.clientWidth - MIN_COLUMN_WIDTH;
+    startDrag(event, (dx) => setLeftWidth(Math.min(max, Math.max(MIN_COLUMN_WIDTH, startWidth + dx))));
   };
 
-  const onCampaignFilenameChange = (event) => setCampaignFilename(event.target.value);
-
-  const handleUseExampleJSON = (index, setter) => {
-    let json;
-    if (index === 0) {
-      json = JSON.stringify(EXAMPLE_EDITION_DATA, null, 4);
-    } else if (index === 1) {
-      json = JSON.stringify(EXAMPLE_ARTICLE_DATA, null, 4);
-    } else {
-      throw new Error("Unknown index");
-    }
-    document.getElementById(`dataTextArea-${index}`).value = json;
-
-    onDataChange(json, setter);
+  const onSectionDividerDown = (event, upperKey, lowerKey) => {
+    // Snapshot the current pixel heights so every open section keeps its size
+    const heights = {};
+    SECTIONS.forEach(({ key }) => {
+      if (openSections[key]) heights[key] = sectionRefs.current[key].offsetHeight;
+    });
+    const total = heights[upperKey] + heights[lowerKey];
+    startDrag(event, (_dx, dy) => {
+      const upper = Math.min(total - MIN_SECTION_HEIGHT, Math.max(MIN_SECTION_HEIGHT, heights[upperKey] + dy));
+      setSectionWeights({ ...heights, [upperKey]: upper, [lowerKey]: total - upper });
+    });
   };
+
+  const openKeys = SECTIONS.map((s) => s.key).filter((key) => openSections[key]);
 
   return (
-    <div className="container">
-      <div className="top-slice">
-        <div className="top-left">
-          <div className="section-titles-container">
-            <div className="section-titles">Editor</div>
-          </div>
-          <Editor className="editor" defaultLanguage="html" defaultValue="" onChange={onEditorChange} onMount={onEditorMount} />
-        </div>
-        <div className="top-right">
-          <div className="preview-container">
-            <Preview html={renderedContent} />
-          </div>
-        </div>
-      </div>
-      <div className="data-slice">
-        <div className="top-left">
-          <div className="section-titles-container">
-            <div className="d-flex">
-              <div className="section-titles">Data (Edition data with placeholder articles and branding)</div>
-              <div className="section-titles">
-                <button onClick={() => handleUseExampleJSON(0, setEditionData)}>Use Example JSON - 20/06/2023</button>
+    <div className="container" ref={containerRef}>
+      <div className="left-column" style={{ width: leftWidth }}>
+        {SECTIONS.map(({ key, title, language }) => {
+          const isOpen = openSections[key];
+          const nextOpenKey = openKeys[openKeys.indexOf(key) + 1];
+          return (
+            <React.Fragment key={key}>
+              <div className={`section ${isOpen ? "open" : ""}`} style={isOpen ? { flex: `${sectionWeights[key]} 1 0` } : undefined} ref={(el) => (sectionRefs.current[key] = el)}>
+                <button className="section-header" onClick={() => toggleSection(key)} aria-expanded={isOpen}>
+                  <span className="chevron">{isOpen ? "▾" : "▸"}</span>
+                  {title}
+                </button>
+                {/* Kept mounted while collapsed so editor content survives toggling */}
+                <div className="section-body" hidden={!isOpen}>
+                  <Editor
+                    height="100%"
+                    theme="vs-dark"
+                    defaultLanguage={language}
+                    defaultValue={language === "json" ? "{}" : ""}
+                    onChange={onChangeFor[key]}
+                    options={{ automaticLayout: true, minimap: { enabled: false }, scrollBeyondLastLine: false }}
+                  />
+                </div>
               </div>
-            </div>
-          </div>
-          <Data data={JSON.stringify(editionData, null, 2)} index={0} onChange={(event) => onDataChange(event.target.value, setEditionData)} />
-        </div>
-        <div className="top-right">
-          <div className="section-titles-container">
-            <div className="d-flex">
-              <div className="section-titles">Data (Article and personalisation data)</div>
-              <div className="section-titles">
-                <button onClick={() => handleUseExampleJSON(1, setArticleData)}>Use Example JSON - 20/06/2023</button>
-              </div>
-            </div>
-          </div>
-          <Data data={JSON.stringify(articleData, null, 2)} index={1} onChange={(event) => onDataChange(event.target.value, setArticleData)} />
-        </div>
+              {isOpen && nextOpenKey && <div className="divider horizontal" onPointerDown={(e) => onSectionDividerDown(e, key, nextOpenKey)} />}
+            </React.Fragment>
+          );
+        })}
       </div>
-      <div className="settings-slice">
-        <Export filename={campaignFilename} onChange={onCampaignFilenameChange} onExport={() => onExport(campaignFilename, EXPORT_TYPE.CAMPAIGN)} exportType="Template" />
-        <Settings renderMJML={renderMJML} setRenderMJML={setRenderMJML} renderVTL={renderVTL} setRenderVTL={setRenderVTL} />
+      <div className="divider vertical" onPointerDown={onColumnDividerDown} />
+      <div className="right-column">
+        <Preview html={renderedContent} />
       </div>
     </div>
   );
