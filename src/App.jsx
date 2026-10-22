@@ -76,7 +76,9 @@ function App() {
     branding: (value) => onDataChange(value, setArticleData),
   };
 
-  const toggleSection = (key) => setOpenSections((prev) => ({ ...prev, [key]: !prev[key] }));
+  // Accordion behaviour: opening a section closes all the others
+  const toggleSection = (key) =>
+    setOpenSections((prev) => Object.fromEntries(SECTIONS.map((s) => [s.key, s.key === key ? !prev[key] : false])));
 
   // Drag handling: pointer capture keeps events flowing even over the preview iframe
   const startDrag = (event, onMove) => {
