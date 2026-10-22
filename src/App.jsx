@@ -76,9 +76,8 @@ function App() {
     branding: (value) => onDataChange(value, setArticleData),
   };
 
-  // Accordion behaviour: opening a section closes all the others
-  const toggleSection = (key) =>
-    setOpenSections((prev) => Object.fromEntries(SECTIONS.map((s) => [s.key, s.key === key ? !prev[key] : false])));
+  // Accordion behaviour: exactly one section is always open
+  const openSection = (key) => setOpenSections(Object.fromEntries(SECTIONS.map((s) => [s.key, s.key === key])));
 
   // Drag handling: pointer capture keeps events flowing even over the preview iframe
   const startDrag = (event, onMove) => {
@@ -128,7 +127,7 @@ function App() {
           return (
             <React.Fragment key={key}>
               <div className={`section ${isOpen ? "open" : ""}`} style={isOpen ? { flex: `${sectionWeights[key]} 1 0` } : undefined} ref={(el) => (sectionRefs.current[key] = el)}>
-                <button className="section-header" onClick={() => toggleSection(key)} aria-expanded={isOpen}>
+                <button className="section-header" onClick={() => openSection(key)} aria-expanded={isOpen}>
                   <span className="chevron">{isOpen ? "▾" : "▸"}</span>
                   {title}
                 </button>
